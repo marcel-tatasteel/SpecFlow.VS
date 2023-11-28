@@ -239,25 +239,22 @@ public abstract class ProjectGenerator : IProjectGenerator
 
     private void InstallNUnit(string packagesFolder, string projectFilePath)
     {
-        if (_options.SpecFlowVersion >= new Version("2.0"))
-            if (IsTargetFrameworkTooOldForNUnit4(_options.TargetFramework))
-            {
-                ExecNuGetInstall("NUnit", packagesFolder, "-Version", "3.14.0"); //Latest major 3 version
-            }
-            else
-            {
-                ExecNuGetInstall("NUnit", packagesFolder);
-            }
+        if (IsTargetFrameworkTooOldForNUnit4(_options.TargetFramework) || _options.SpecFlowVersion < new Version("2.0"))
+        {
+            ExecNuGetInstall("NUnit", packagesFolder, "-Version", "3.14.0"); //Latest major 3 version
+        }
+        else
+        {
+            ExecNuGetInstall("NUnit", packagesFolder);
+        }
 
-        else //v1.9
-            ExecNuGetInstall("NUnit", packagesFolder, "-Version", "3.0.0");
         ExecNuGetInstall("NUnit3TestAdapter", packagesFolder);
 
         var projectChanger = CreateProjectChanger(projectFilePath);
 
-        if (IsTargetFrameworkTooOldForNUnit4(_options.TargetFramework))
+        if (IsTargetFrameworkTooOldForNUnit4(_options.TargetFramework) || _options.SpecFlowVersion < new Version("2.0"))
         {
-            InstallNuGetPackage(projectChanger, packagesFolder, "NUnit", packageVersion: "3.14.0");
+            InstallNuGetPackage(projectChanger, packagesFolder, "NUnit", packageVersion: "3.14.0", sourcePlatform: "netstandard2.0");
         }
         else
         {
