@@ -275,11 +275,16 @@ public abstract class ProjectGenerator : IProjectGenerator
     {
         return framework switch
         {
+            "netcoreapp20" => true,
             "netcoreapp2.0" => true,
             "netcoreapp2.1" => true,
+            "netcoreapp21" => true,
             "netcoreapp2.2" => true,
+            "netcoreapp22" => true,
             "netcoreapp3.0" => true,
+            "netcoreapp30" => true,
             "netcoreapp3.1" => true,
+            "netcoreapp31" => true,
             "net5.0" => true,
             _ => false
         };
